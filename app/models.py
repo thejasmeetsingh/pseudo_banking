@@ -13,5 +13,8 @@ class Transaction(models.Model):
     deposit_amount = models.DecimalField(max_digits=10, decimal_places=2)
     balance_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
+    # For fetching latest transaction if the date of one or more transactions is the same.
+    sequence = models.PositiveIntegerField(default=0)
+
     class Meta:
         ordering = ('account_number', 'date')

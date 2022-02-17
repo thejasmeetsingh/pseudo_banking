@@ -54,3 +54,38 @@ class TransactionListView(TransactionBaseView):
             }
 
         return Response(response)
+
+
+class BalanceAmountView(TransactionBaseView):
+    def get(self, request, **kwargs):
+        try:
+            date = timezone.now().strptime(
+                "{}-{}-{}".format(
+                    f"0{kwargs['day']}" if 0 <= kwargs['day'] <= 9 else kwargs['day'],
+                    f"0{kwargs['month']}" if 0 <= kwargs['month'] <= 9 else kwargs['month'],
+                    f"0{kwargs['year']}" if 0 <= kwargs['year'] <= 9 else kwargs['year'],
+                ),
+                "%d-%m-%y"
+            ).date()
+
+            instance = self.get_queryset().filter(date=date).order_by('-sequence').first()
+            response = {
+                "status": {
+                    "code": status.HTTP_200_OK,
+                    "message": f"{'Balanced Amount' if instance else 'No Balance Amount'} found on "
+                               f"{date.strftime('%d-%m-%y')} date."
+                },
+                "balance_amount": instance.balance_amount if instance else None,
+            }
+
+        except Exception as e:
+            logger.error({'Ref': str(e), 'traceback': traceback.format_exc()})
+            response = {
+                "status": {
+                    "code": status.HTTP_403_FORBIDDEN,
+                    "message": str(e),
+                },
+                "balance_amount": None,
+            }
+
+        return Response(response)

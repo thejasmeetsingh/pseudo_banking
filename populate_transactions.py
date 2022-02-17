@@ -26,8 +26,9 @@ def populate_transactions():
             if data["Deposit AMT"] else 0.00,
             balance_amount=round(decimal.Decimal(data["Balance AMT"].replace(',', '')), 2)
             if data["Balance AMT"] else 0.00,
+            sequence=sequence,
         )
-        for data in response
+        for sequence, data in enumerate(response)
     ])
 
     return 'Transaction Populated Successfully'

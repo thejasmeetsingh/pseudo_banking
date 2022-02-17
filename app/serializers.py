@@ -4,6 +4,8 @@ from rest_framework import serializers
 
 from app.models import Transaction
 
+from messages import *
+
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,10 +25,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         if ('withdrawal_amount' not in validated_data and 'deposit_amount' not in validated_data) or \
                 (('withdrawal_amount' in validated_data and not validated_data['withdrawal_amount']) and
                  ('deposit_amount' in validated_data and not validated_data['deposit_amount'])):
-            raise serializers.ValidationError(
-                'You need to send either Withdrawal Amount or Deposit Amount while adding Transaction Details',
-                code='invalid',
-            )
+            raise serializers.ValidationError(TRANSACTION_CREATE_INVALID_DATA, code='invalid')
 
         is_balance_calculated = False
 
@@ -37,7 +36,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
             if latest_transaction:
                 if not latest_transaction.balance_amount:
-                    raise serializers.ValidationError('You do not have enough balance in your account.', code='invalid')
+                    raise serializers.ValidationError(TRANSACTION_CREATE_NOT_ENOUGH_BALANCE, code='invalid')
 
                 balance_amount = latest_transaction.balance_amount + (
                     validated_data['deposit_amount']
@@ -47,7 +46,9 @@ class TransactionSerializer(serializers.ModelSerializer):
 
                 if validated_data['withdrawal_amount'] > balance_amount:
                     raise serializers.ValidationError(
-                        f"You can only without {validated_data['withdrawal_amount'] - balance_amount} from your account",
+                        TRANSACTION_CREATE_INVALID_WITHDRAWAL_AMOUNT.format(
+                            validated_data['withdrawal_amount'] - balance_amount
+                        ),
                         code='invalid',
                     )
 

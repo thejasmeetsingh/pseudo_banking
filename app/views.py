@@ -11,6 +11,8 @@ from rest_framework.permissions import AllowAny
 from app.models import Transaction
 from app.serializers import TransactionSerializer
 
+from messages import *
+
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +41,7 @@ class TransactionListView(TransactionBaseView):
             response = {
                 "status": {
                     "code": status.HTTP_200_OK,
-                    "message": f"{len(serialized_data)} transactions found for {date.strftime('%d-%m-%y')} date."
+                    "message": TRANSACTION_LIST_SUCCESS.format(len(serialized_data), date.strftime('%d-%m-%y')),
                 },
                 "data": serialized_data,
             }
@@ -73,8 +75,8 @@ class BalanceAmountView(TransactionBaseView):
             response = {
                 "status": {
                     "code": status.HTTP_200_OK,
-                    "message": f"{'Balanced Amount' if instance else 'No Balance Amount'} found on "
-                               f"{date.strftime('%d-%m-%y')} date."
+                    "message": BALANCE_AMOUNT_SUCCESS.format('Balanced Amount' if instance else 'No Balance Amount',
+                                                             date.strftime('%d-%m-%y')),
                 },
                 "balance_amount": instance.balance_amount if instance else None,
             }
@@ -101,7 +103,7 @@ class TransactionDetailView(TransactionBaseView):
             response = {
                 "status": {
                     "code": status.HTTP_200_OK,
-                    "message": f"Transaction Details for {kwargs['pk']} ID."
+                    "message": TRANSACTION_DETAIL_SUCCESS.format(kwargs['pk']),
                 },
                 "data": serialized_data,
             }
@@ -109,7 +111,7 @@ class TransactionDetailView(TransactionBaseView):
             response = {
                 "status": {
                     "code": status.HTTP_404_NOT_FOUND,
-                    "message": f"No Transaction Details found for {kwargs['pk']} ID."
+                    "message": TRANSACTION_DETAIL_ERROR.format(kwargs['pk']),
                 },
                 "data": None,
             }
@@ -128,7 +130,7 @@ class TransactionCreateView(TransactionBaseView):
             response = {
                 "status": {
                     "code": status.HTTP_201_CREATED,
-                    "message": f"Transaction Details Added Successfully."
+                    "message": TRANSACTION_CREATE_SUCCESS,
                 },
                 "data": serializer.data,
             }

@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Transaction(models.Model):
-    id = models.UUIDField(default=uuid.uuid4(), unique=True, primary_key=True, db_index=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, db_index=True, editable=False)
     account_number = models.PositiveBigIntegerField()
     date = models.DateField()
     details = models.CharField(max_length=255)

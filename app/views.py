@@ -89,3 +89,28 @@ class BalanceAmountView(TransactionBaseView):
             }
 
         return Response(response)
+
+
+class TransactionDetailView(TransactionBaseView):
+    def get(self, request, **kwargs):
+        instance = self.get_queryset().filter(id=kwargs['pk']).first()
+
+        if instance:
+            serialized_data = self.serializer_class(instance, context=self.get_serializer_context()).data
+            response = {
+                "status": {
+                    "code": status.HTTP_200_OK,
+                    "message": f"Transaction Details for {kwargs['pk']} ID."
+                },
+                "data": serialized_data,
+            }
+        else:
+            response = {
+                "status": {
+                    "code": status.HTTP_404_NOT_FOUND,
+                    "message": f"No Transaction Details found for {kwargs['pk']} ID."
+                },
+                "data": None,
+            }
+
+        return Response(response)

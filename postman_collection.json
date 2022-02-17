@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "c83c2e7e-0558-4a76-a275-1a6bf710da59",
+		"name": "Pseudo Banking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Transaction List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local_url}}/api/transactions/29-06-17/",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"api",
+						"transactions",
+						"29-06-17",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Balance Amount",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local_url}}/api/balance/16-08-17/",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"api",
+						"balance",
+						"16-08-17",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Transaction Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local_url}}/api/details/0e65e53f-36c3-4241-87a9-08338cfac500/",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"api",
+						"details",
+						"0e65e53f-36c3-4241-87a9-08338cfac500",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Transaction Details",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "account_number",
+							"value": "409000611074",
+							"description": "Required: Send Account Number",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2022-02-18",
+							"description": "Required: Send in this format YYYY-MM-DD",
+							"type": "text"
+						},
+						{
+							"key": "details",
+							"value": "Lorem Ipsum Transaction",
+							"description": "Required: Max Length = 255 charachets including space",
+							"type": "text"
+						},
+						{
+							"key": "value_date",
+							"value": "2022-02-18",
+							"description": "Required: Send in this format YYYY-MM-DD",
+							"type": "text"
+						},
+						{
+							"key": "withdrawal_amount",
+							"value": "10000000",
+							"description": "Required: if \"deposit_amount\" value is blank",
+							"type": "text"
+						},
+						{
+							"key": "deposit_amount",
+							"value": "8524368.00",
+							"description": "Required: if \"withdrawal_amount\" value is blank",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{local_url}}/api/add/",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"api",
+						"add",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "server_url",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

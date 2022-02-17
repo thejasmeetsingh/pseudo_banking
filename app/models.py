@@ -9,9 +9,9 @@ class Transaction(models.Model):
     date = models.DateField()
     details = models.CharField(max_length=255)
     value_date = models.DateField()
-    withdrawal_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    deposit_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    balance_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    withdrawal_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    deposit_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    balance_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     # For fetching latest transaction if the date of one or more transactions is the same.
     sequence = models.PositiveIntegerField(default=0)

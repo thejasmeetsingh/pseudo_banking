@@ -1,6 +1,7 @@
 import logging
 import traceback
 
+from django.db import transaction
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
@@ -109,6 +110,34 @@ class TransactionDetailView(TransactionBaseView):
                 "status": {
                     "code": status.HTTP_404_NOT_FOUND,
                     "message": f"No Transaction Details found for {kwargs['pk']} ID."
+                },
+                "data": None,
+            }
+
+        return Response(response)
+
+
+class TransactionCreateView(TransactionBaseView):
+    @transaction.atomic
+    def post(self, request):
+        try:
+            serializer = self.serializer_class(data=request.data, context=self.get_serializer_context())
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            response = {
+                "status": {
+                    "code": status.HTTP_201_CREATED,
+                    "message": f"Transaction Details Added Successfully."
+                },
+                "data": serializer.data,
+            }
+        except Exception as e:
+            logger.error({'Ref': str(e), 'traceback': traceback.format_exc()})
+            response = {
+                "status": {
+                    "code": status.HTTP_400_BAD_REQUEST,
+                    "message": e.args[0],
                 },
                 "data": None,
             }

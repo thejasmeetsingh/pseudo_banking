@@ -6,4 +6,5 @@ urlpatterns = [
     path('transactions/<int:day>-<int:month>-<int:year>/', views.TransactionListView.as_view()),
     path('balance/<int:day>-<int:month>-<int:year>/', views.BalanceAmountView.as_view()),
     path('details/<str:pk>/', views.TransactionDetailView.as_view()),
+    path('add/', views.TransactionCreateView.as_view()),
 ]
